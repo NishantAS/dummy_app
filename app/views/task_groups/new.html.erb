@@ -1,6 +1,6 @@
 <div class="container-sm">
   <h1>New task group</h1>
-  <%= form_with(model: @task_group, url: task_groups_path) do |form| %>
+  <%= form_with(model: @task_group, url: task_groups_path, class: "mb-3") do |form| %>
     <% if @task_group.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(@task_group.errors.count, "error") %> prohibited this task from being saved:</h2>
@@ -32,11 +32,11 @@
     </div>
 
     <div>
-      <%= form.submit "Add Task", class: "btn btn-primary" %>
+      <%= form.submit "Add Task Group", class: "btn btn-primary" %>
     </div>
   <% end %>
   <div>
-    <%= link_to "Back to task groups", user_task_groups_path(user_name: current_user.name) %>
+    <%= link_to "Back to task groups", user_task_groups_path(user_name: current_user.name), class: "btn btn-info" %>
   </div>
 </div>
 

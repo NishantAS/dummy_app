@@ -1,12 +1,8 @@
-<% task = @task %>
-<%= render @task, tt: "flex-wrap" %>
-
-<div>
-  <%= link_to "Edit this task", edit_task_path(@task) %> |
-  <%= link_to "Back to tasks", tasks_path %>
-
-  <%= button_to "Destroy this task", @task, method: :delete %>
+<div class="container text-center mb-3 mt-3">
+  <%= link_to "Back to tasks", tasks_path, class: "btn btn-info" %>
 </div>
+
+<%= render @task, tt: "flex-wrap" %>
 
 		<script type="text/javascript">
 			document.querySelectorAll('.timestamps').forEach( (timestamp) => 

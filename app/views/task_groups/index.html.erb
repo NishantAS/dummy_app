@@ -1,14 +1,5 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Task groups</h1>
-
-<div id="task_groups">
+<div class="d-flex flex-wrap justify-content-center mt-3">
   <% @task_groups.each do |task_group| %>
-    <%= render task_group %>
-    <p>
-      <%= link_to "Show this task group", user_task_group_path(user_name: task_group.user_name, name: task_group.name) %>
-    </p>
+    <%= render task_group, max_length: 350, width: "23rem" %>
   <% end %>
 </div>
-
-<%= link_to "New task group", new_task_group_path %>

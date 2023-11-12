@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: %i[ edit update destroy ]
+  before_action :authenticate_user!, only: %i[ edit update destroy profile ]
 
   def show
     @user = User.find(params[:name])
@@ -64,7 +64,7 @@ class UsersController < ApplicationController
       if @user.present?
         logout
         @user.destroy!
-        format.html { redirect_to users_url, notice: "User was successfully destroyed." }
+        format.html { redirect_to root_path, notice: "User was successfully destroyed." }
         format.json { head :no_content }
       else
         format.html { redirect_to user_profile_path, alert: "Password incorrect"}
