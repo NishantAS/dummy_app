@@ -1,0 +1,96 @@
+<div class="container-sm">
+  <h1>Update task</h1>
+  <%= form_with(model: @task, html: { onsubmit: "new.validateForm(this); return false;", id: "tasks-add-form" } ) do |form| %>
+    <% if @task.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+
+        <ul>
+          <% @task.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="input-group mb-3">
+      <span class="input-group-text">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-heading" viewBox="0 0 16 16">
+          <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+          <path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z"/>
+        </svg>
+      </span>
+      <div class="form-floating">
+        <%= form.text_field :title, class: "form-control", placeholder: "Title" , required: true %>
+        <%= form.label :title, class: "form-label" %>
+      </div>
+      <div class="form-floating">
+        <%= form.select :group_name, current_user.task_groups.all.pluck(:name), { selected: @task.group_name }, class: "form-select"  %>
+        <%= form.label :group_name, class: "form-label" %>
+      </div>
+    </div>    
+
+    <div class="form-floating mb-3">
+      <%= form.text_area :description, class: "form-control", placeholder: "Description" %>
+      <%= form.label :description, class: "form-label" %>
+    </div>
+
+    <% if @task.during_time? %>
+      <div class="input-group mb-3">
+        <%= form.datetime_field :from_time, class: "form-control", value: @task.during_time.begin, onInput: "return updateTo(this);" %>
+        <span class="input-group-text">to</span>
+        <%= form.datetime_field :to_time, class: "form-control", value: @task.during_time.end, onInput: "return updateFrom(this);" %>
+      </div>
+    <% else %>
+      <div class="input-group mb-3">
+        <%= form.datetime_field :from_time, class: "form-control", onInput: "return updateTo(this);" %>
+        <span class="input-group-text">to</span>
+        <%= form.datetime_field :to_time, class: "form-control", onInput: "return updateFrom(this);" %>
+      </div>
+    <% end %>
+
+    <div class="form-check form-switch mb-3">
+      <%= form.check_box :private, role: "switch", class: "form-check-input" %>
+      <%= form.label :private, "Private Task", class: "form-check-label" %>
+    </div>
+
+    <div>
+      <%= form.submit "Update task", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <%= link_to "Show this task group", user_task_group_task_path(user_name: @task.user_name, task_group_name: @task.group_name, id: @task.id) %> |
+  <%= link_to "Back to task groups", tasks_path(user_name: @task.user_name) %>
+</div>
+
+<script type='text/javascript'>
+  function updateTo(currelem) {
+    let to = document.querySelector("#task_to_time");
+    to.min = currelem.value;
+  }
+
+  function updateFrom(currelem) {
+    let from = document.querySelector("#task_from_time");
+    from.max = currelem.value;
+  }
+  function OnInput() {
+    this.style.height = 0;
+    this.style.height = this.scrollHeight + "px";
+  }
+  function onreadyFunc() {
+    const tx = document.querySelector("#task_description");
+    tx.setAttribute(
+      "style",
+      "height:" + tx.scrollHeight + "px;overflow-y:hidden;"
+    );
+    tx.addEventListener("input", OnInput, false);
+
+    let to = document.querySelector("#task_to_time");
+    let from = document.querySelector("#task_from_time");
+    let now = new Date();
+    to.min = from.min = now
+      .toISOString()
+      .substring(0, now.toISOString().length - 8);
+  }
+  onreadyFunc();
+</script>

@@ -1,0 +1,13 @@
+<div class="container-sm">
+  <h1>Editing task group</h1>
+
+  <%= render "form", task_group: @task_group %>
+
+  <br>
+
+  <div>
+    <%= link_to "Show this task group", user_task_group_path(user_name: @task_group.user_name, name: @task_group.name) %> |
+    <%= link_to "Back to task groups", user_task_groups_path(user_name: @task_group.user_name) %>
+  </div>
+
+</div>

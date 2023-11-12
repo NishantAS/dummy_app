@@ -1,0 +1,78 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <label class="navbar-brand">Task List App</label>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <%= link_to "Home", root_path, class: "btn btn-dark me-3", id: "nav-home-link" %>
+        </li>
+        <!--
+        <li class="nav-item">
+          <a class="btn btn-dark me-3" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="btn btn-dark me-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        -->
+        <% if user_signed_in? %>
+          <li class="nav-item">
+              <%= link_to "Profile", profile_path, class: "btn btn-dark me-3", id: "nav-profile-link" %>
+          </li>
+          <li class="nav-item">
+              <%= link_to "Tasks", tasks_path, class: "btn btn-dark me-3", id: "nav-profile-link" %>
+          </li>
+          <li class="nav-item dropdown">
+            <div class="btn-group">
+              <%= link_to "New Task", new_task_path(group_name: current_user.task_groups.find_or_create_by(name: current_user.default_task_group_name).name), class: "btn btn-dark" %>
+              <button type="button" class="btn btn-dark me-3 dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <% current_user.task_groups.each do |tg| %>
+                  <li><%= link_to tg.name, new_task_path(group_name: tg.name), class: "dropdown-item", disabled: tg.name==params[:group_name] %></li>
+                <% end %>
+                <li><hr class="dropdown-divider"></li>
+                <li><%= link_to "New...", new_task_group_path, class: "dropdown-item", id: "nav-dropdown-create-task-group-link" %></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+              <%= link_to "Task Groups", user_task_groups_path(user_name: current_user.name), class: "btn btn-dark me-3", id: "nav-profile-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "New Task Group", new_task_group_path, class: "btn btn-dark me-3", id: "nav-create-task-group-link" %>
+          </li>
+          <li class="nav-item">
+              <%= button_to "Sign out", session_path, method: :delete, class: "btn btn-outline-danger me-3" %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+              <%= link_to "Sign in", new_session_path, class: "btn btn-dark me-3" %>
+          </li>
+          <li class="nav-item">
+              <%= link_to "Sign up", new_user_path, class: "btn btn-dark me-3" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <%= form_with url: user_search_path, class: "d-flex", html: { name: "SerachBox", role: "search", id: "user-search-form"} do |form| %>
+      <%= form.text_field :name, class: "form-control me-2", placeholder: "Search User", autocomplete: false %>
+      <%= form.button nil, class: "btn btn-outline-success" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        </svg>
+      <% end %>
+    <% end %>
+  </div>
+</nav>

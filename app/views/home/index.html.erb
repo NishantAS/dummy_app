@@ -1,0 +1,6 @@
+<% if user_signed_in? %>
+<% else %>
+  <%= link_to "login", new_session_path %>
+  <%= link_to "sign_up", new_user_path %>
+<% end %>
+

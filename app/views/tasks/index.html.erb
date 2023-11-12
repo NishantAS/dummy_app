@@ -1,0 +1,65 @@
+<br>
+	<div class="container">
+		<div class="input-group mb-3">
+			<div class="form-floating">
+				<%= select_tag :group_name, options_for_select(current_user.task_groups.pluck(:name), params.with_defaults(group_name: current_user.default_task_group_name)[:group_name]), class: "form-select", oninput: "return change_url_select(this)" %>
+				<%= label_tag :group_name, "Group Name" %>
+			</div>
+			<div class="input-group-text mt-0">
+				<div class="form-check">
+					<%= check_box_tag :group_all, class: "form-check-input", onchange: "return change_url_group_all(this)", checked: params.with_defaults(group_all: 'false')[:group_all] == 'true' %>
+					<%= label_tag :group_all, "Show tasks from all groups", class: "form-check-label" %>
+				</div>
+			</div>
+			<div class="input-group-text mt-0">
+				<div class="form-check">
+					<%= check_box_tag :done, class: "form-check-input", onchange: "return change_url_done(this)", checked: params.with_defaults(done: 'true')[:done] == 'true' %>
+					<%= label_tag :done, "Show completed tasks", class: "form-check-label" %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="d-flex flex-wrap justify-content-center">
+		<% @tasks.each do |task| %>
+      <%= render task, max_length: 350, width: "23rem" %>
+		<% end %>
+	</div>
+		<script type="text/javascript">
+			document.querySelectorAll('.timestamps').forEach( (timestamp) => 
+			{
+					var t     = new Date(timestamp.innerHTML),
+					hours     = t.getHours(), 
+					min       = t.getMinutes() + '', 
+					pm        = false,
+					months    = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+					if(hours > 11){
+						hours = hours - 12;
+						pm = true;
+					}
+
+					if(hours == 0) hours = 12;
+					if(min.length == 1) min = '0' + min;
+
+					timestamp.innerHTML = months[t.getMonth()] + ' ' + t.getDate() + ', ' + t.getFullYear() + ' ' + hours + ':' + min + ' ' + (pm ? 'pm' : 'am');
+				});
+
+			function change_url_select(select_elem) {
+				let url = new URL(window.location.href);
+				url.searchParams.set("group_name", select_elem.value);
+				window.location.replace(url);
+			}
+
+			function change_url_group_all(check_box_elem) {
+				let url = new URL(window.location.href);
+				url.searchParams.set("group_all", check_box_elem.checked);
+				window.location.replace(url);
+			}
+
+			function change_url_done(check_box_elem) {
+				let url = new URL(window.location.href);
+				url.searchParams.set("done", check_box_elem.checked);
+				window.location.replace(url);
+			}
+		</script>

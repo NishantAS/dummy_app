@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @task_group %>
+
+<div>
+  <%= link_to "Edit this task group", edit_task_group_path(name: @task_group.name) %> |
+  <%= link_to "Back to task groups", user_task_groups_path %>
+
+  <%= button_to "Destroy this task group", task_group_path(name: @task_group.name), method: :delete %>
+</div>

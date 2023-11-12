@@ -1,0 +1,51 @@
+<%= form_with(model: @task_group, url: task_group_path(name: @task_group.name)) do |form| %>
+    <% if @task_group.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(@task_group.errors.count, "error") %> prohibited this task from being saved:</h2>
+
+        <ul>
+          <% @task_group.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="input-group mb-3">
+      <span class="input-group-text">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-heading" viewBox="0 0 16 16">
+          <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+          <path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z"/>
+        </svg>
+      </span>
+      <div class="form-floating">
+        <%= form.text_field :name, class: "form-control", placeholder: "Name" , required: true %>
+        <%= form.label :name, class: "form-label" %>
+      </div>
+    </div>    
+
+    <div class="form-floating mb-3">
+      <%= form.text_area :description, class: "form-control", placeholder: "Description" %>
+      <%= form.label :description, class: "form-label" %>
+    </div>
+
+    <div>
+      <%= form.submit "Add Task", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <script>
+    function OnInput() {
+    this.style.height = 0;
+    this.style.height = this.scrollHeight + "px";
+  }
+  function onreadyFunc() {
+    const tx = document.querySelector("#task_group_description");
+    tx.setAttribute(
+      "style",
+      "height:" + tx.scrollHeight + "px;overflow-y:hidden;"
+    );
+    tx.addEventListener("input", OnInput, false);
+  }
+  onreadyFunc();
+  </script>
