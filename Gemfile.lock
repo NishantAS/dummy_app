@@ -209,10 +209,6 @@ GEM
     regexp_parser (2.8.2)
     reline (0.3.9)
       io-console (~> 0.5)
-    rename (1.0.8)
-      activesupport
-      rails (>= 3.0.0)
-      thor (>= 0.19.1)
     request_store (1.5.1)
       rack (>= 1.4)
     rexml (3.2.6)
@@ -278,7 +274,6 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 7.1.1)
   rdbg (~> 0.1.0)
-  rename (~> 1.0, >= 1.0.8)
   sassc-rails
   selenium-webdriver
   sprockets-rails
